@@ -11,14 +11,20 @@ app.use(bodyParser.json());
 
 const apiRouter = express.Router();
 
-// You can delete this route once you add your own routes
 apiRouter.get("/", async (req, res) => {
-  const SHOW_TABLES_QUERY =
-    process.env.DB_CLIENT === "pg"
-      ? "SELECT * FROM pg_catalog.pg_tables;"
-      : "SHOW TABLES;";
-  const tables = await knex.raw(SHOW_TABLES_QUERY);
-  res.json({ tables });
+  res.json({
+    name: "Meal Sharing API",
+    version: "1.0.0",
+    description:
+      "An API for a meal sharing platform. Allows users to view upcoming and past meals, get information about all meals, and retrieve details about the first and last meals added to the system.",
+    endpoints: [
+      "/future-meals - Get all upcoming meals",
+      "/past-meals - Get all past meals",
+      "/all-meals - Get all meals sorted by ID",
+      "/first-meal - Get the first meal added",
+      "/last-meal - Get the most recently added meal",
+    ],
+  });
 });
 
 apiRouter.get("/future-meals", async (req, res) => {

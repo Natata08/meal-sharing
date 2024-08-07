@@ -36,13 +36,13 @@ apiRouter.get("/future-meals", async (req, res) => {
 
 apiRouter.get("/past-meals", async (req, res) => {
   const meals = await knex.raw(
-    "SELECT * FROM meal WHERE scheduled_at < NOW() ORDER BY scheduled_at",
+    "SELECT * FROM meal WHERE scheduled_at <= NOW() ORDER BY scheduled_at",
   );
   res.json(meals[0]);
 });
 
 apiRouter.get("/all-meals", async (req, res) => {
-  const meals = await knex.raw("SELECT * FROM meal");
+  const meals = await knex.raw("SELECT * FROM meal ORDER BY id");
   res.json(meals[0]);
 });
 

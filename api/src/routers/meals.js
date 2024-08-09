@@ -21,10 +21,10 @@ router.get("/", async (req, res) => {
 
 router.get("/future-meals", async (req, res) => {
   try {
-    const meals = await knex.raw(
+    const [meals] = await knex.raw(
       "SELECT * FROM meal WHERE scheduled_at > NOW() ORDER BY scheduled_at",
     );
-    res.json(meals[0]);
+    res.json(meals);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error fetching upcoming meals" });
@@ -33,10 +33,10 @@ router.get("/future-meals", async (req, res) => {
 
 router.get("/past-meals", async (req, res) => {
   try {
-    const meals = await knex.raw(
+    const [meals] = await knex.raw(
       "SELECT * FROM meal WHERE scheduled_at <= NOW() ORDER BY scheduled_at",
     );
-    res.json(meals[0]);
+    res.json(meals);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error fetching past meals" });
@@ -45,8 +45,8 @@ router.get("/past-meals", async (req, res) => {
 
 router.get("/all-meals", async (req, res) => {
   try {
-    const meals = await knex.raw("SELECT * FROM meal ORDER BY id");
-    res.json(meals[0]);
+    const [meals] = await knex.raw("SELECT * FROM meal ORDER BY id");
+    res.json(meals);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error fetching all meals" });
@@ -55,11 +55,12 @@ router.get("/all-meals", async (req, res) => {
 
 router.get("/first-meal", async (req, res) => {
   try {
-    const meals = await knex.raw("SELECT * FROM meal ORDER BY id ASC LIMIT 1");
-    if (meals[0].length === 0) {
+    const [meal] = await knex.raw("SELECT * FROM meal ORDER BY id ASC LIMIT 1");
+    if (meal.length === 0) {
       res.status(404).json({ message: "There are no meals" });
     } else {
-      res.json(meals[0][0]);
+      const [firstMeal] = meal;
+      res.json(firstMeal);
     }
   } catch (error) {
     console.log(error);
@@ -69,11 +70,14 @@ router.get("/first-meal", async (req, res) => {
 
 router.get("/last-meal", async (req, res) => {
   try {
-    const meals = await knex.raw("SELECT * FROM meal ORDER BY id DESC LIMIT 1");
-    if (meals[0].length === 0) {
+    const [meal] = await knex.raw(
+      "SELECT * FROM meal ORDER BY id DESC LIMIT 1",
+    );
+    if (meal.length === 0) {
       res.status(404).json({ message: "There are no meals" });
     } else {
-      res.json(meals[0][0]);
+      const [lastMeal] = meal;
+      res.json(lastMeal);
     }
   } catch (error) {
     console.log(error);

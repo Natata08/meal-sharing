@@ -28,6 +28,21 @@ export const addNewMeal = async (req, res) => {
   }
 };
 
+export const getMealById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const [meal] = await knex.from('meal').select().where({ id: id });
+    if (meal) {
+      res.json(meal);
+    } else {
+      res.status(404).json({ error: 'Meal not found' });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Error finding a meal' });
+  }
+};
+
 export const getFutureMeals = async (req, res) => {
   try {
     const [meals] = await knex.raw(

@@ -18,7 +18,7 @@ export const addNewMeal = async (req, res) => {
     }
 
     const [id] = await knex('meal').insert(req.body);
-    const newMeal = await knex('meal').where({ id: id });
+    const [newMeal] = await knex('meal').where({ id: id });
     res
       .status(201)
       .json({ message: 'New meal added successfully', meal: newMeal });
@@ -30,7 +30,7 @@ export const addNewMeal = async (req, res) => {
 
 export const getMealById = async (req, res) => {
   try {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     const [meal] = await knex.from('meal').select().where({ id: id });
     if (meal) {
       res.json(meal);
@@ -40,6 +40,25 @@ export const getMealById = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Error finding a meal' });
+  }
+};
+
+export const updateMealById = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const isUpdated = await knex('meal').where({ id: id }).update(req.body);
+    if (isUpdated) {
+      const [updatedMeal] = await knex('meal').where({ id: id });
+      res.status(201).json({
+        message: 'Meal updated successfully',
+        updatedMeal: updatedMeal,
+      });
+    } else {
+      res.status(404).json({ error: 'Meal not found' });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Error updating a meal' });
   }
 };
 

@@ -4,6 +4,7 @@ import {
   getAllMeals,
   addNewMeal,
   getMealById,
+  updateMealById,
   getFutureMeals,
   getPastMeals,
   getFirstMeal,
@@ -15,9 +16,10 @@ const router = express.Router();
 router.get('/', getAllMeals);
 router.post('/', addNewMeal);
 router.get('/:id', getMealById);
+router.put('/:id', updateMealById);
 router.get('/future-meals', getFutureMeals);
 router.get('/past-meals', getPastMeals);
-// router.get('/all-meals', getAllMeals);
+
 router.get('/first-meal', getFirstMeal);
 router.get('/last-meal', getLastMeal);
 

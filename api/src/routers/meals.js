@@ -10,6 +10,7 @@ import {
   addNewMeal,
   getMealById,
   updateMealById,
+  deleteMealById,
   getFutureMeals,
   getPastMeals,
   getFirstMeal,
@@ -22,6 +23,7 @@ router.get('/', getAllMeals);
 router.post('/', validateRequest(mealAddSchema), addNewMeal);
 router.get('/:id', getMealById);
 router.put('/:id', validateRequest(mealUpdateSchema), updateMealById);
+router.delete('/:id', deleteMealById);
 
 router.get('/future-meals', getFutureMeals);
 router.get('/past-meals', getPastMeals);

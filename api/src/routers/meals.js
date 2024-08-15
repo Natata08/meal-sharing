@@ -1,5 +1,9 @@
 import express from 'express';
-import { validateNewMeal } from '../helper/validation.js';
+import {
+  mealAddSchema,
+  validateRequest,
+  mealUpdateSchema,
+} from '../helper/validation.js';
 
 import {
   getAllMeals,
@@ -15,9 +19,9 @@ import {
 const router = express.Router();
 
 router.get('/', getAllMeals);
-router.post('/', validateNewMeal, addNewMeal);
+router.post('/', validateRequest(mealAddSchema), addNewMeal);
 router.get('/:id', getMealById);
-router.put('/:id', updateMealById);
+router.put('/:id', validateRequest(mealUpdateSchema), updateMealById);
 
 router.get('/future-meals', getFutureMeals);
 router.get('/past-meals', getPastMeals);

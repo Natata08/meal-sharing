@@ -74,9 +74,10 @@ export const deleteMealById = async (req, res) => {
 
 export const getFutureMeals = async (req, res) => {
   try {
-    const [meals] = await knex.raw(
-      'SELECT * FROM meal WHERE scheduled_at > NOW() ORDER BY scheduled_at'
-    );
+    const meals = await knex('meal')
+      .select()
+      .where('scheduled_at', '>', knex.fn.now())
+      .orderBy('scheduled_at');
     res.json(meals);
   } catch (error) {
     console.log(error);
@@ -86,9 +87,10 @@ export const getFutureMeals = async (req, res) => {
 
 export const getPastMeals = async (req, res) => {
   try {
-    const [meals] = await knex.raw(
-      'SELECT * FROM meal WHERE scheduled_at <= NOW() ORDER BY scheduled_at'
-    );
+    const meals = await knex('meal')
+      .select()
+      .where('scheduled_at', '<=', knex.fn.now())
+      .orderBy('scheduled_at');
     res.json(meals);
   } catch (error) {
     console.log(error);
@@ -98,12 +100,12 @@ export const getPastMeals = async (req, res) => {
 
 export const getFirstMeal = async (req, res) => {
   try {
-    const [meal] = await knex.raw('SELECT * FROM meal ORDER BY id ASC LIMIT 1');
-    if (meal.length === 0) {
+    const meal = await knex('meal').orderBy('id', 'asc').first();
+
+    if (!meal) {
       res.status(404).json({ message: 'There are no meals' });
     } else {
-      const [firstMeal] = meal;
-      res.json(firstMeal);
+      res.json(meal);
     }
   } catch (error) {
     console.log(error);
@@ -113,14 +115,12 @@ export const getFirstMeal = async (req, res) => {
 
 export const getLastMeal = async (req, res) => {
   try {
-    const [meal] = await knex.raw(
-      'SELECT * FROM meal ORDER BY id DESC LIMIT 1'
-    );
-    if (meal.length === 0) {
+    const meal = await knex('meal').orderBy('id', 'desc').first();
+
+    if (!meal) {
       res.status(404).json({ message: 'There are no meals' });
     } else {
-      const [lastMeal] = meal;
-      res.json(lastMeal);
+      res.json(meal);
     }
   } catch (error) {
     console.log(error);

@@ -1,9 +1,9 @@
-import express from 'express';
+import express from "express";
 import {
   reservationAddSchema,
   reservationUpdateSchema,
   validateRequest,
-} from '../helper/validation.js';
+} from "../helper/validation.js";
 
 import {
   getAllReservations,
@@ -11,18 +11,18 @@ import {
   getReservationById,
   updateReservationById,
   deleteReservationById,
-} from '../controllers/reservationController.js';
+} from "../controllers/reservationController.js";
 
 const router = express.Router();
 
-router.get('/', getAllReservations);
-router.post('/', validateRequest(reservationAddSchema), addNewReservation);
-router.get('/:id', getReservationById);
+router.get("/", getAllReservations);
+router.post("/", validateRequest(reservationAddSchema), addNewReservation);
+router.get("/:id", getReservationById);
 router.put(
-  '/:id',
+  "/:id",
   validateRequest(reservationUpdateSchema),
-  updateReservationById
+  updateReservationById,
 );
-router.delete('/:id', deleteReservationById);
+router.delete("/:id", deleteReservationById);
 
 export default router;

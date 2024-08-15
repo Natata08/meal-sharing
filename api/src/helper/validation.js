@@ -1,8 +1,8 @@
-import Joi from 'joi';
+import Joi from "joi";
 
 export const mealAddSchema = Joi.object({
   title: Joi.string().required(),
-  description: Joi.string().optional().allow('').allow(null),
+  description: Joi.string().optional().allow("").allow(null),
   location: Joi.string().required(),
   scheduled_at: Joi.date().iso().required(),
   max_reservations: Joi.number().integer().required(),
@@ -11,7 +11,7 @@ export const mealAddSchema = Joi.object({
 
 export const mealUpdateSchema = Joi.object({
   title: Joi.string(),
-  description: Joi.string().allow('').allow(null),
+  description: Joi.string().allow("").allow(null),
   location: Joi.string(),
   scheduled_at: Joi.date().iso(),
   max_reservations: Joi.number().integer(),
@@ -21,17 +21,17 @@ export const mealUpdateSchema = Joi.object({
 export const reservationAddSchema = Joi.object({
   number_of_guests: Joi.number().integer().min(1).required(),
   meal_id: Joi.number().integer().required(),
-  contact_phonenumber: Joi.string().optional().allow('').allow(null),
+  contact_phonenumber: Joi.string().optional().allow("").allow(null),
   contact_name: Joi.string().required(),
-  contact_email: Joi.string().email().optional().allow('').allow(null),
+  contact_email: Joi.string().email().optional().allow("").allow(null),
 });
 
 export const reservationUpdateSchema = Joi.object({
   number_of_guests: Joi.number().integer().min(1),
   meal_id: Joi.number().integer(),
-  contact_phonenumber: Joi.string().allow('').allow(null),
+  contact_phonenumber: Joi.string().allow("").allow(null),
   contact_name: Joi.string(),
-  contact_email: Joi.string().email().allow('').allow(null),
+  contact_email: Joi.string().email().allow("").allow(null),
 }).min(1);
 
 export const validateRequest = (schema) => {
@@ -45,7 +45,7 @@ export const validateRequest = (schema) => {
     if (!req.value) {
       req.value = {};
     }
-    req.value['body'] = value;
+    req.value["body"] = value;
     next();
   };
 };

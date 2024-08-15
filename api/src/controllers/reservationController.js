@@ -69,6 +69,28 @@ export const getReservationById = async (req, res) => {
 
 export const updateReservationById = async (req, res) => {
   try {
+    //checking available spots for reservation
+    const { meal_id, number_of_guests } = req.body;
+    const reservationId = req.params.id;
+    const meal = await knex("meal").where({ id: meal_id }).first();
+    if (!meal) {
+      return res.status(404).json({ error: "There is no meal with such ID" });
+    }
+    const query = await knex("reservation")
+      .where({ meal_id: meal_id })
+      .whereNot({ id: reservationId })
+      .sum("number_of_guests")
+      .first();
+
+    const currentReservations = parseInt(query["sum(`number_of_guests`)"]) || 0;
+    const availableSpots = meal.max_reservations - currentReservations;
+    if (number_of_guests > availableSpots) {
+      return res.status(400).json({
+        error: "Not enough available spots",
+        "available spots": availableSpots,
+      });
+    }
+
     const id = parseInt(req.params.id);
     if (isNaN(id)) {
       return res.status(400).json({

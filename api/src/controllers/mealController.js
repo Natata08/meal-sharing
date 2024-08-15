@@ -12,11 +12,6 @@ export const getAllMeals = async (req, res) => {
 
 export const addNewMeal = async (req, res) => {
   try {
-    const { title, location, scheduled_at, max_reservations, price } = req.body;
-    if (!title || !location || !scheduled_at || !max_reservations || !price) {
-      return res.status(400).json({ error: 'Missing required fields' });
-    }
-
     const [id] = await knex('meal').insert(req.body);
     const [newMeal] = await knex('meal').where({ id: id });
     res

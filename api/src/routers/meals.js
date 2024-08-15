@@ -1,8 +1,8 @@
 import express from 'express';
 import {
   mealAddSchema,
-  validateRequest,
   mealUpdateSchema,
+  validateRequest,
 } from '../helper/validation.js';
 
 import {

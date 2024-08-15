@@ -26,6 +26,11 @@ export const addNewMeal = async (req, res) => {
 export const getMealById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({
+        error: "Correct id is not provided",
+      });
+    }
     const [meal] = await knex.from("meal").select().where({ id: id });
     if (meal) {
       res.json(meal);
@@ -41,6 +46,11 @@ export const getMealById = async (req, res) => {
 export const updateMealById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({
+        error: "Correct id is not provided",
+      });
+    }
     const isUpdated = await knex("meal").where({ id: id }).update(req.body);
     if (isUpdated) {
       const [updatedMeal] = await knex("meal").where({ id: id });
@@ -60,6 +70,11 @@ export const updateMealById = async (req, res) => {
 export const deleteMealById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({
+        error: "Correct id is not provided",
+      });
+    }
     const isDeleted = await knex("meal").where({ id: id }).del();
     if (isDeleted) {
       res.json({ message: "Meal deleted successfully" });

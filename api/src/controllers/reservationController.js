@@ -47,6 +47,11 @@ export const addNewReservation = async (req, res) => {
 export const getReservationById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({
+        error: "Correct id is not provided",
+      });
+    }
     const [reservation] = await knex
       .from("reservation")
       .select()
@@ -65,6 +70,11 @@ export const getReservationById = async (req, res) => {
 export const updateReservationById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({
+        error: "Correct id is not provided",
+      });
+    }
     const isUpdated = await knex("reservation")
       .where({ id: id })
       .update(req.body);
@@ -86,6 +96,11 @@ export const updateReservationById = async (req, res) => {
 export const deleteReservationById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
+    if (isNaN(id)) {
+      return res.status(400).json({
+        error: "Correct id is not provided",
+      });
+    }
     const isDeleted = await knex("reservation").where({ id: id }).del();
     if (isDeleted) {
       res.json({ message: "Reservation deleted successfully" });

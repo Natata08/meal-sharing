@@ -19,16 +19,15 @@ import {
 
 const router = express.Router();
 
+router.get('/future-meals', getFutureMeals);
+router.get('/past-meals', getPastMeals);
+router.get('/first-meal', getFirstMeal);
+router.get('/last-meal', getLastMeal);
+
 router.get('/', getAllMeals);
 router.post('/', validateRequest(mealAddSchema), addNewMeal);
 router.get('/:id', getMealById);
 router.put('/:id', validateRequest(mealUpdateSchema), updateMealById);
 router.delete('/:id', deleteMealById);
-
-router.get('/future-meals', getFutureMeals);
-router.get('/past-meals', getPastMeals);
-router.get('/first-meal', getFirstMeal);
-router.get('/last-meal', getLastMeal);
-router.get('/last-meal', getLastMeal);
 
 export default router;

@@ -15,9 +15,11 @@ export const addNewReservation = async (req, res) => {
     //checking available spots for reservation
     const { meal_id, number_of_guests } = req.body;
     const meal = await knex("meal").where({ id: meal_id }).first();
+
     if (!meal) {
       return res.status(404).json({ error: "There is no meal with such ID" });
     }
+
     const query = await knex("reservation")
       .where({ meal_id: meal_id })
       .sum("number_of_guests")
@@ -25,6 +27,7 @@ export const addNewReservation = async (req, res) => {
 
     const currentReservations = parseInt(query["sum(`number_of_guests`)"]) || 0;
     const availableSpots = meal.max_reservations - currentReservations;
+
     if (number_of_guests > availableSpots) {
       return res.status(400).json({
         error: "Not enough available spots",
@@ -47,15 +50,18 @@ export const addNewReservation = async (req, res) => {
 export const getReservationById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
+
     if (isNaN(id)) {
       return res.status(400).json({
         error: "Correct id is not provided",
       });
     }
+
     const [reservation] = await knex
       .from("reservation")
       .select()
       .where({ id: id });
+
     if (reservation) {
       res.json(reservation);
     } else {
@@ -73,9 +79,11 @@ export const updateReservationById = async (req, res) => {
     const { meal_id, number_of_guests } = req.body;
     const reservationId = req.params.id;
     const meal = await knex("meal").where({ id: meal_id }).first();
+
     if (!meal) {
       return res.status(404).json({ error: "There is no meal with such ID" });
     }
+
     const query = await knex("reservation")
       .where({ meal_id: meal_id })
       .whereNot({ id: reservationId })
@@ -84,6 +92,7 @@ export const updateReservationById = async (req, res) => {
 
     const currentReservations = parseInt(query["sum(`number_of_guests`)"]) || 0;
     const availableSpots = meal.max_reservations - currentReservations;
+
     if (number_of_guests > availableSpots) {
       return res.status(400).json({
         error: "Not enough available spots",
@@ -92,14 +101,17 @@ export const updateReservationById = async (req, res) => {
     }
 
     const id = parseInt(req.params.id);
+
     if (isNaN(id)) {
       return res.status(400).json({
         error: "Correct id is not provided",
       });
     }
+
     const isUpdated = await knex("reservation")
       .where({ id: id })
       .update(req.body);
+
     if (isUpdated) {
       const [updatedReservation] = await knex("reservation").where({ id: id });
       res.status(201).json({
@@ -118,12 +130,14 @@ export const updateReservationById = async (req, res) => {
 export const deleteReservationById = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
+
     if (isNaN(id)) {
       return res.status(400).json({
         error: "Correct id is not provided",
       });
     }
     const isDeleted = await knex("reservation").where({ id: id }).del();
+
     if (isDeleted) {
       res.json({ message: "Reservation deleted successfully" });
     } else {

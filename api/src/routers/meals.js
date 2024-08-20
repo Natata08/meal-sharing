@@ -1,21 +1,33 @@
 import express from "express";
+import {
+  mealAddSchema,
+  mealUpdateSchema,
+  validateRequest,
+} from "../helper/validation.js";
 
 import {
+  getAllMeals,
+  addNewMeal,
+  getMealById,
+  updateMealById,
+  deleteMealById,
   getFutureMeals,
   getPastMeals,
-  getAllMeals,
   getFirstMeal,
   getLastMeal,
-  getApiInfo,
 } from "../controllers/mealController.js";
 
 const router = express.Router();
 
-router.get("/", getApiInfo);
 router.get("/future-meals", getFutureMeals);
 router.get("/past-meals", getPastMeals);
-router.get("/all-meals", getAllMeals);
 router.get("/first-meal", getFirstMeal);
 router.get("/last-meal", getLastMeal);
+
+router.get("/", getAllMeals);
+router.post("/", validateRequest(mealAddSchema), addNewMeal);
+router.get("/:id", getMealById);
+router.put("/:id", validateRequest(mealUpdateSchema), updateMealById);
+router.delete("/:id", deleteMealById);
 
 export default router;

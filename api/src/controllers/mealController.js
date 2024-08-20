@@ -1,8 +1,13 @@
 import knex from '../database_client.js';
 
-export const getAllMeals = async (req, res) => {
+export const getMealsWithQueries = async (req, res) => {
   try {
-    const meals = await knex.from('meal').select();
+    let query = knex.select().from('meal');
+    if (req.query.maxPrice) {
+      query = query.where('price', '<', parseFloat(req.query.maxPrice));
+    }
+
+    const meals = await query;
     res.json(meals);
   } catch (error) {
     console.log(error);

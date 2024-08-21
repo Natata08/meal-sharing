@@ -53,7 +53,7 @@ export const getReservationById = async (req, res) => {
 
     if (isNaN(id)) {
       return res.status(400).json({
-        error: "Correct id is not provided",
+        error: "Invalid ID provided",
       });
     }
 
@@ -105,7 +105,7 @@ export const updateReservationById = async (req, res) => {
 
     if (isNaN(id)) {
       return res.status(400).json({
-        error: "Correct id is not provided",
+        error: "Invalid ID provided",
       });
     }
 
@@ -136,7 +136,7 @@ export const deleteReservationById = async (req, res) => {
 
     if (isNaN(id)) {
       return res.status(400).json({
-        error: "Correct id is not provided",
+        error: "Invalid ID provided",
       });
     }
     const isDeleted = await knex("reservation").where({ id: id }).del();

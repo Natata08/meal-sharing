@@ -72,7 +72,7 @@ export const getMealById = async (req, res) => {
 
     if (isNaN(id)) {
       return res.status(400).json({
-        error: "Correct id is not provided",
+        error: "Invalid ID provided",
       });
     }
 
@@ -95,7 +95,7 @@ export const updateMealById = async (req, res) => {
 
     if (isNaN(id)) {
       return res.status(400).json({
-        error: "Correct id is not provided",
+        error: "Invalid ID provided",
       });
     }
 
@@ -122,7 +122,7 @@ export const deleteMealById = async (req, res) => {
 
     if (isNaN(id)) {
       return res.status(400).json({
-        error: "Correct id is not provided",
+        error: "Invalid ID provided",
       });
     }
 

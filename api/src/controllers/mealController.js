@@ -211,12 +211,7 @@ export const getReviewsForMeal = async (req, res) => {
       .from("review")
       .select()
       .where({ meal_id: meal_id });
-
-    if (reviews) {
-      res.json(reviews);
-    } else {
-      res.status(404).json({ error: "Reviews not found" });
-    }
+    res.json(reviews);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error finding reviews" });

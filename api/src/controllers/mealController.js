@@ -16,7 +16,7 @@ export const getMealsWithQueries = async (req, res) => {
         .havingRaw(
           isAvailable
             ? "m.max_reservations > COALESCE(SUM(r.number_of_guests), 0)"
-            : "m.max_reservations <= COALESCE(SUM(r.number_of_guests), 0)"
+            : "m.max_reservations <= COALESCE(SUM(r.number_of_guests), 0)",
         );
     }
 
@@ -34,6 +34,15 @@ export const getMealsWithQueries = async (req, res) => {
 
     if (req.query.limit) {
       query = query.limit(parseInt(req.query.limit));
+    }
+
+    if (req.query.sortKey) {
+      const { sortKey, sortDir } = req.query;
+      const allowedKeysToSort = ["scheduled_at", "max_reservations", "price"];
+
+      if (allowedKeysToSort.includes(sortKey)) {
+        query = query.orderBy(sortKey, sortDir === "desc" ? "desc" : "asc");
+      }
     }
 
     const meals = await query;

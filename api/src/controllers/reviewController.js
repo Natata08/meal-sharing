@@ -73,4 +73,25 @@ export const updateReviewById = async (req, res) => {
   }
 };
 
-export const deleteReviewById = async (req, res) => {};
+export const deleteReviewById = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    if (isNaN(id)) {
+      return res.status(400).json({
+        error: "Invalid ID provided",
+      });
+    }
+
+    const isDeleted = await knex("review").where({ id: id }).del();
+
+    if (isDeleted) {
+      res.json({ message: "Review deleted successfully" });
+    } else {
+      res.status(404).json({ error: "Review not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error deleting a review" });
+  }
+};

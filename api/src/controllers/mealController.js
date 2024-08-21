@@ -20,6 +20,10 @@ export const getMealsWithQueries = async (req, res) => {
         );
     }
 
+    if (req.query.title) {
+      query = query.where("title", "like", `%${req.query.title}%`);
+    }
+
     const meals = await query;
     res.json(meals);
   } catch (error) {

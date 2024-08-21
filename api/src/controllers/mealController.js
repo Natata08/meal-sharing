@@ -24,6 +24,14 @@ export const getMealsWithQueries = async (req, res) => {
       query = query.where("title", "like", `%${req.query.title}%`);
     }
 
+    if (req.query.dateAfter) {
+      query = query.where("scheduled_at", ">", req.query.dateAfter);
+    }
+
+    if (req.query.dateBefore) {
+      query = query.where("scheduled_at", "<", req.query.dateBefore);
+    }
+
     const meals = await query;
     res.json(meals);
   } catch (error) {

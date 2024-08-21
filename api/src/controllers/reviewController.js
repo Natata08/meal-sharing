@@ -23,6 +23,54 @@ export const addNewReview = async (req, res) => {
   }
 };
 
-export const getReviewById = async (req, res) => {};
-export const updateReviewById = async (req, res) => {};
+export const getReviewById = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    if (isNaN(id)) {
+      return res.status(400).json({
+        error: "Invalid ID provided",
+      });
+    }
+
+    const review = await knex.from("review").select().where({ id: id }).first();
+
+    if (review) {
+      res.json(review);
+    } else {
+      res.status(404).json({ error: "Review not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error finding a review" });
+  }
+};
+
+export const updateReviewById = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    if (isNaN(id)) {
+      return res.status(400).json({
+        error: "Invalid ID provided",
+      });
+    }
+
+    const isUpdated = await knex("review").where({ id: id }).update(req.body);
+
+    if (isUpdated) {
+      const updatedReview = await knex("review").where({ id: id }).first();
+      res.status(201).json({
+        message: "Review updated successfully",
+        "updated review": updatedReview,
+      });
+    } else {
+      res.status(404).json({ error: "Review not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error updating a review" });
+  }
+};
+
 export const deleteReviewById = async (req, res) => {};

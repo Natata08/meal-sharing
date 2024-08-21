@@ -15,6 +15,7 @@ import {
   getPastMeals,
   getFirstMeal,
   getLastMeal,
+  getReviewsForMeal,
 } from "../controllers/mealController.js";
 
 const router = express.Router();
@@ -27,6 +28,7 @@ router.get("/last-meal", getLastMeal);
 router.get("/", getMealsWithQueries);
 router.post("/", validateRequest(mealAddSchema), addNewMeal);
 router.get("/:id", getMealById);
+router.get("/:meal_id/reviews", getReviewsForMeal);
 router.put("/:id", validateRequest(mealUpdateSchema), updateMealById);
 router.delete("/:id", deleteMealById);
 

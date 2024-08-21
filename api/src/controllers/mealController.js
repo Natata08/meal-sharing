@@ -196,3 +196,29 @@ export const getLastMeal = async (req, res) => {
       .json({ error: "Error fetching the most recently added meal" });
   }
 };
+
+export const getReviewsForMeal = async (req, res) => {
+  try {
+    const meal_id = parseInt(req.params.meal_id);
+
+    if (isNaN(meal_id)) {
+      return res.status(400).json({
+        error: "Invalid ID provided",
+      });
+    }
+
+    const reviews = await knex
+      .from("review")
+      .select()
+      .where({ meal_id: meal_id });
+
+    if (reviews) {
+      res.json(reviews);
+    } else {
+      res.status(404).json({ error: "Reviews not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error finding reviews" });
+  }
+};

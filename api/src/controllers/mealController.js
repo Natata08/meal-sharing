@@ -16,7 +16,7 @@ export const getMealsWithQueries = async (req, res) => {
         .havingRaw(
           isAvailable
             ? "m.max_reservations > COALESCE(SUM(r.number_of_guests), 0)"
-            : "m.max_reservations <= COALESCE(SUM(r.number_of_guests), 0)",
+            : "m.max_reservations <= COALESCE(SUM(r.number_of_guests), 0)"
         );
     }
 
@@ -30,6 +30,10 @@ export const getMealsWithQueries = async (req, res) => {
 
     if (req.query.dateBefore) {
       query = query.where("scheduled_at", "<", req.query.dateBefore);
+    }
+
+    if (req.query.limit) {
+      query = query.limit(parseInt(req.query.limit));
     }
 
     const meals = await query;

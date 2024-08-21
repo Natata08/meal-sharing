@@ -4,6 +4,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import mealRouters from "./routers/meals.js";
 import reservationRouters from "./routers/reservations.js";
+import reviewRouters from "./routers/reviews.js";
 
 const app = express();
 app.use(cors());
@@ -26,6 +27,7 @@ apiRouter.get("/", (req, res) => {
 
 apiRouter.use("/meals", mealRouters);
 apiRouter.use("/reservations", reservationRouters);
+apiRouter.use("/reviews", reviewRouters);
 
 app.use("/api", apiRouter);
 

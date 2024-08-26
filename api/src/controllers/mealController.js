@@ -16,7 +16,7 @@ export const getMealsWithQueries = async (req, res) => {
         .havingRaw(
           isAvailable
             ? "m.max_reservations > COALESCE(SUM(r.number_of_guests), 0)"
-            : "m.max_reservations <= COALESCE(SUM(r.number_of_guests), 0)",
+            : "m.max_reservations <= COALESCE(SUM(r.number_of_guests), 0)"
         );
     }
 
@@ -79,10 +79,10 @@ export const getMealById = async (req, res) => {
     const meal = await knex.from("meal").select().where({ id: id }).first();
 
     if (meal) {
-      res.json(meal);
-    } else {
-      res.status(404).json({ error: "Meal not found" });
+      return res.json(meal);
     }
+
+    res.status(404).json({ error: "Meal not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error finding a meal" });
@@ -103,13 +103,13 @@ export const updateMealById = async (req, res) => {
 
     if (isUpdated) {
       const updatedMeal = await knex("meal").where({ id: id }).first();
-      res.status(201).json({
+      return res.status(201).json({
         message: "Meal updated successfully",
         "updated meal": updatedMeal,
       });
-    } else {
-      res.status(404).json({ error: "Meal not found" });
     }
+
+    res.status(404).json({ error: "Meal not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error updating a meal" });
@@ -129,10 +129,10 @@ export const deleteMealById = async (req, res) => {
     const isDeleted = await knex("meal").where({ id: id }).del();
 
     if (isDeleted) {
-      res.json({ message: "Meal deleted successfully" });
-    } else {
-      res.status(404).json({ error: "Meal not found" });
+      return res.json({ message: "Meal deleted successfully" });
     }
+
+    res.status(404).json({ error: "Meal not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error deleting a meal" });
@@ -170,10 +170,10 @@ export const getFirstMeal = async (req, res) => {
     const meal = await knex("meal").orderBy("id", "asc").first();
 
     if (!meal) {
-      res.status(404).json({ message: "There are no meals" });
-    } else {
-      res.json(meal);
+      return res.status(404).json({ message: "There are no meals" });
     }
+
+    res.json(meal);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error fetching the first meal added" });
@@ -185,10 +185,10 @@ export const getLastMeal = async (req, res) => {
     const meal = await knex("meal").orderBy("id", "desc").first();
 
     if (!meal) {
-      res.status(404).json({ message: "There are no meals" });
-    } else {
-      res.json(meal);
+      return res.status(404).json({ message: "There are no meals" });
     }
+
+    res.json(meal);
   } catch (error) {
     console.log(error);
     res

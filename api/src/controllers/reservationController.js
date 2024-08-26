@@ -64,10 +64,10 @@ export const getReservationById = async (req, res) => {
       .first();
 
     if (reservation) {
-      res.json(reservation);
-    } else {
-      res.status(404).json({ error: "Reservation not found" });
+      return res.json(reservation);
     }
+
+    res.status(404).json({ error: "Reservation not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error finding a reservation" });
@@ -117,13 +117,13 @@ export const updateReservationById = async (req, res) => {
       const updatedReservation = await knex("reservation")
         .where({ id: id })
         .first();
-      res.status(201).json({
+      return res.status(201).json({
         message: "Reservation updated successfully",
         "updated reservation": updatedReservation,
       });
-    } else {
-      res.status(404).json({ error: "Reservation not found" });
     }
+
+    res.status(404).json({ error: "Reservation not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error updating a reservation" });
@@ -142,10 +142,10 @@ export const deleteReservationById = async (req, res) => {
     const isDeleted = await knex("reservation").where({ id: id }).del();
 
     if (isDeleted) {
-      res.json({ message: "Reservation deleted successfully" });
-    } else {
-      res.status(404).json({ error: "Reservation not found" });
+      return res.json({ message: "Reservation deleted successfully" });
     }
+
+    res.status(404).json({ error: "Reservation not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error deleting a reservation" });

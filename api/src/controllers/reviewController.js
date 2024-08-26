@@ -36,10 +36,10 @@ export const getReviewById = async (req, res) => {
     const review = await knex.from("review").select().where({ id: id }).first();
 
     if (review) {
-      res.json(review);
-    } else {
-      res.status(404).json({ error: "Review not found" });
+      return res.json(review);
     }
+
+    res.status(404).json({ error: "Review not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error finding a review" });
@@ -60,13 +60,13 @@ export const updateReviewById = async (req, res) => {
 
     if (isUpdated) {
       const updatedReview = await knex("review").where({ id: id }).first();
-      res.status(201).json({
+      return res.status(201).json({
         message: "Review updated successfully",
         "updated review": updatedReview,
       });
-    } else {
-      res.status(404).json({ error: "Review not found" });
     }
+
+    res.status(404).json({ error: "Review not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error updating a review" });
@@ -86,10 +86,10 @@ export const deleteReviewById = async (req, res) => {
     const isDeleted = await knex("review").where({ id: id }).del();
 
     if (isDeleted) {
-      res.json({ message: "Review deleted successfully" });
-    } else {
-      res.status(404).json({ error: "Review not found" });
+      return res.json({ message: "Review deleted successfully" });
     }
+
+    res.status(404).json({ error: "Review not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error deleting a review" });

@@ -36,7 +36,7 @@ export const addNewReservation = async (req, res) => {
     }
 
     const [id] = await knex("reservation").insert(req.body);
-    const [newReservation] = await knex("reservation").where({ id: id });
+    const newReservation = await knex("reservation").where({ id: id }).first();
     res.status(201).json({
       message: "New reservation added successfully",
       reservation: newReservation,
@@ -53,20 +53,21 @@ export const getReservationById = async (req, res) => {
 
     if (isNaN(id)) {
       return res.status(400).json({
-        error: "Correct id is not provided",
+        error: "Invalid ID provided",
       });
     }
 
-    const [reservation] = await knex
+    const reservation = await knex
       .from("reservation")
       .select()
-      .where({ id: id });
+      .where({ id: id })
+      .first();
 
     if (reservation) {
-      res.json(reservation);
-    } else {
-      res.status(404).json({ error: "Reservation not found" });
+      return res.json(reservation);
     }
+
+    res.status(404).json({ error: "Reservation not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error finding a reservation" });
@@ -104,7 +105,7 @@ export const updateReservationById = async (req, res) => {
 
     if (isNaN(id)) {
       return res.status(400).json({
-        error: "Correct id is not provided",
+        error: "Invalid ID provided",
       });
     }
 
@@ -113,14 +114,16 @@ export const updateReservationById = async (req, res) => {
       .update(req.body);
 
     if (isUpdated) {
-      const [updatedReservation] = await knex("reservation").where({ id: id });
-      res.status(201).json({
+      const updatedReservation = await knex("reservation")
+        .where({ id: id })
+        .first();
+      return res.status(201).json({
         message: "Reservation updated successfully",
-        updatedReservation: updatedReservation,
+        "updated reservation": updatedReservation,
       });
-    } else {
-      res.status(404).json({ error: "Reservation not found" });
     }
+
+    res.status(404).json({ error: "Reservation not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error updating a reservation" });
@@ -133,16 +136,16 @@ export const deleteReservationById = async (req, res) => {
 
     if (isNaN(id)) {
       return res.status(400).json({
-        error: "Correct id is not provided",
+        error: "Invalid ID provided",
       });
     }
     const isDeleted = await knex("reservation").where({ id: id }).del();
 
     if (isDeleted) {
-      res.json({ message: "Reservation deleted successfully" });
-    } else {
-      res.status(404).json({ error: "Reservation not found" });
+      return res.json({ message: "Reservation deleted successfully" });
     }
+
+    res.status(404).json({ error: "Reservation not found" });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Error deleting a reservation" });

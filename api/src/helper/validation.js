@@ -34,6 +34,20 @@ export const reservationUpdateSchema = Joi.object({
   contact_email: Joi.string().email().allow("").allow(null),
 }).min(1);
 
+export const reviewAddSchema = Joi.object({
+  title: Joi.string().optional().allow("").allow(null),
+  description: Joi.string().optional().allow("").allow(null),
+  meal_id: Joi.number().integer().required(),
+  stars: Joi.number().integer().min(1).max(5).required(),
+});
+
+export const reviewUpdateSchema = Joi.object({
+  title: Joi.string().allow("").allow(null),
+  description: Joi.string().allow("").allow(null),
+  meal_id: Joi.number().integer(),
+  stars: Joi.number().integer().min(1).max(5),
+}).min(1);
+
 export const validateRequest = (schema) => {
   return (req, res, next) => {
     const { error, value } = schema.validate(req.body);

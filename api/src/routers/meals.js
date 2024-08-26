@@ -6,7 +6,7 @@ import {
 } from "../helper/validation.js";
 
 import {
-  getAllMeals,
+  getMealsWithQueries,
   addNewMeal,
   getMealById,
   updateMealById,
@@ -15,6 +15,7 @@ import {
   getPastMeals,
   getFirstMeal,
   getLastMeal,
+  getReviewsForMeal,
 } from "../controllers/mealController.js";
 
 const router = express.Router();
@@ -24,9 +25,10 @@ router.get("/past-meals", getPastMeals);
 router.get("/first-meal", getFirstMeal);
 router.get("/last-meal", getLastMeal);
 
-router.get("/", getAllMeals);
+router.get("/", getMealsWithQueries);
 router.post("/", validateRequest(mealAddSchema), addNewMeal);
 router.get("/:id", getMealById);
+router.get("/:meal_id/reviews", getReviewsForMeal);
 router.put("/:id", validateRequest(mealUpdateSchema), updateMealById);
 router.delete("/:id", deleteMealById);
 

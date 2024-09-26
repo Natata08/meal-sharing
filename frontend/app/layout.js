@@ -1,6 +1,7 @@
-import Navbar from "@/components/Navbar";
 import "./globals.css";
+import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Box, CssBaseline } from "@mui/material";
 
 export const metadata = {
   title: "Meal-sharing app",
@@ -11,11 +12,22 @@ export default function RootLayout({ children }) {
   return (
     <html lang='en'>
       <body>
-        <header>
-          <Navbar />
-        </header>
-        {children}
-        <Footer />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            minHeight: "100vh",
+          }}
+        >
+          <CssBaseline />
+          <Box component='main' sx={{ flexGrow: 1 }}>
+            <header>
+              <Navbar />
+            </header>
+            {children}
+          </Box>
+          <Footer />
+        </Box>
       </body>
     </html>
   );

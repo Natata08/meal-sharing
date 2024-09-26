@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import "./globals.css";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Meal-sharing app",
@@ -14,6 +15,7 @@ export default function RootLayout({ children }) {
           <Navbar />
         </header>
         {children}
+        <Footer />
       </body>
     </html>
   );

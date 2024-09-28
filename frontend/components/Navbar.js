@@ -1,7 +1,7 @@
 "use client";
 
-import * as React from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -24,31 +24,28 @@ const navItems = [
   { text: "Meals", href: "/meals" },
 ];
 
-function DrawerAppBar(props) {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const router = useRouter();
+export default function DrawerAppBar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const pathname = usePathname();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
 
-  const handleNavigation = (href) => {
-    router.push(href);
-    setMobileOpen(false);
-  };
-
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant='h6' sx={{ my: 2 }}>
+      <Typography variant='h6' component='h1' sx={{ my: 2 }}>
         Meal Sharing
       </Typography>
+
       <Divider />
       <List>
         {navItems.map((item) => (
           <ListItemButton
             key={item.text}
-            onClick={() => handleNavigation(item.href)}
+            component={Link}
+            href={item.href}
+            onClick={handleDrawerToggle}
           >
             <ListItemText primary={item.text} />
           </ListItemButton>
@@ -56,9 +53,6 @@ function DrawerAppBar(props) {
       </List>
     </Box>
   );
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -74,25 +68,44 @@ function DrawerAppBar(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant='h6'
-            component='div'
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+          <Link
+            href='/'
+            passHref
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+              flexGrow: 1,
+              display: { xs: "none", sm: "block" },
+            }}
           >
-            Meal Sharing
-          </Typography>
+            <Typography
+              variant='h6'
+              component='h1'
+              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            >
+              Meal Sharing
+            </Typography>
+          </Link>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
-              <Link href={item.href} key={item.text}>
-                <Button sx={{ color: "#fff" }}>{item.text}</Button>
-              </Link>
+              <Button
+                key={item.text}
+                component={Link}
+                href={item.href}
+                sx={{
+                  color: "#fff",
+                  backgroundColor:
+                    pathname === item.href ? "primary.light" : "transparent",
+                }}
+              >
+                {item.text}
+              </Button>
             ))}
           </Box>
         </Toolbar>
       </AppBar>
       <nav>
         <Drawer
-          container={container}
           variant='temporary'
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -113,5 +126,3 @@ function DrawerAppBar(props) {
     </Box>
   );
 }
-
-export default DrawerAppBar;

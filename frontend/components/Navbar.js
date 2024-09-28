@@ -16,6 +16,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
 
 const drawerWidth = 240;
 const navItems = [
@@ -58,51 +59,53 @@ export default function DrawerAppBar() {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <AppBar component='nav' position='sticky'>
-        <Toolbar>
-          <IconButton
-            color='inherit'
-            aria-label='open drawer'
-            edge='start'
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Link
-            href='/'
-            passHref
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-              flexGrow: 1,
-              display: { xs: "none", sm: "block" },
-            }}
-          >
-            <Typography
-              variant='h6'
-              component='h1'
-              sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+        <Container maxWidth='lg' disableGutters>
+          <Toolbar>
+            <IconButton
+              color='inherit'
+              aria-label='open drawer'
+              edge='start'
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none" } }}
             >
-              Meal Sharing
-            </Typography>
-          </Link>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button
-                key={item.text}
-                component={Link}
-                href={item.href}
-                sx={{
-                  color: "#fff",
-                  backgroundColor:
-                    pathname === item.href ? "primary.light" : "transparent",
-                }}
+              <MenuIcon />
+            </IconButton>
+            <Link
+              href='/'
+              passHref
+              style={{
+                textDecoration: "none",
+                color: "inherit",
+                flexGrow: 1,
+                display: { xs: "none", sm: "block" },
+              }}
+            >
+              <Typography
+                variant='h6'
+                component='h1'
+                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >
-                {item.text}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
+                Meal Sharing
+              </Typography>
+            </Link>
+            <Box sx={{ display: { xs: "none", sm: "block" } }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item.text}
+                  component={Link}
+                  href={item.href}
+                  sx={{
+                    color: "#fff",
+                    backgroundColor:
+                      pathname === item.href ? "primary.light" : "transparent",
+                  }}
+                >
+                  {item.text}
+                </Button>
+              ))}
+            </Box>
+          </Toolbar>
+        </Container>
       </AppBar>
       <nav>
         <Drawer

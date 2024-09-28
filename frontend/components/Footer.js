@@ -21,7 +21,7 @@ export default function Footer() {
             : theme.palette.grey[800],
       }}
     >
-      <Container maxWidth='sm'>
+      <Container maxWidth='lg'>
         <Typography variant='body1' align='center'>
           © {currentYear} Meal Sharing. All rights reserved.
         </Typography>

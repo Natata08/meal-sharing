@@ -95,6 +95,7 @@ export default function DrawerAppBar() {
                   component={Link}
                   href={item.href}
                   sx={{
+                    mr: 1,
                     color: "#fff",
                     backgroundColor:
                       pathname === item.href ? "primary.light" : "transparent",

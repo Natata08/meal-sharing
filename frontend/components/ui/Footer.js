@@ -3,7 +3,7 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import SocialMediaIcons from "@/components/SocialMediaIcons";
+import SocialMediaIcons from "@/components/ui/SocialMediaIcons";
 import { usePathname } from "next/navigation";
 import styles from "./Footer.module.css";
 

@@ -1,6 +1,6 @@
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import Header from "@/components/ui/Header";
+import Footer from "@/components/ui/Footer";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 

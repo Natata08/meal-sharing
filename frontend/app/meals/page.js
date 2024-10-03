@@ -1,19 +1,22 @@
 import MealsList from "@/components/MealsList";
+import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
-export default function Home() {
+export default function MealsPage() {
   return (
     <main>
-      <Typography
-        variant='h4'
-        component='h2'
-        gutterBottom
-        textAlign='center'
-        mt={5}
-      >
-        All available meals
-      </Typography>
-      <MealsList />
+      <Container maxWidth='lg' sx={{ mt: 13, mb: 6 }}>
+        <Typography
+          variant='h4'
+          component='h2'
+          gutterBottom
+          align='center'
+          color='primary'
+        >
+          All Meals
+        </Typography>
+        <MealsList />
+      </Container>
     </main>
   );
 }

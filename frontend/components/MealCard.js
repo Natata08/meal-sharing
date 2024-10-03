@@ -9,33 +9,10 @@ import Stack from "@mui/material/Stack";
 import AccessTime from "@mui/icons-material/AccessTime";
 import LocationOn from "@mui/icons-material/LocationOn";
 import AttachMoney from "@mui/icons-material/AttachMoney";
-
-const randomImages = [
-  "/images/caesar.jpg",
-  "/images/pancake.jpg",
-  "/images/ribs.jpg",
-  "/images/salad.jpg",
-  "/images/steak.jpg",
-];
+import formatDate from "@/utils/formatDate.js";
 
 export default function Meal({ meal }) {
-  const formatDate = (dateString) => {
-    const options = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  const getRandomImage = () => {
-    const randomIndex = Math.floor(Math.random() * randomImages.length);
-    return randomImages[randomIndex];
-  };
-
-  const imageUrl = meal.imageUrl || getRandomImage();
+  const imageUrl = `/images/meals/${meal.image_url}` || "default.jpg";
 
   return (
     <Link
@@ -46,7 +23,7 @@ export default function Meal({ meal }) {
       <Card
         sx={{
           width: 300,
-          height: 400,
+          minHeight: 350,
           m: 2,
           transition: "all 0.3s ease-in-out",
           "&:hover": {
@@ -61,7 +38,7 @@ export default function Meal({ meal }) {
         <CardMedia sx={{ position: "relative", height: 200, width: "100%" }}>
           <Image
             src={imageUrl}
-            alt={meal.title}
+            alt={`Photo of ${meal.title}`}
             fill
             sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
             style={{ objectFit: "cover" }}
@@ -73,30 +50,28 @@ export default function Meal({ meal }) {
             flexGrow: 1,
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between",
-            height: 200,
           }}
         >
           <Typography variant='h6' component='h3' gutterBottom noWrap>
             {meal.title}
           </Typography>
 
-          <Stack spacing={2}>
-            <Box display='flex' alignItems='center'>
-              <LocationOn color='action' sx={{ mr: 1, flexShrink: 0 }} />
+          <Stack spacing={1}>
+            <Box display='flex' alignItems='flex-end'>
+              <LocationOn color={"primary"} sx={{ mr: 1, flexShrink: 0 }} />
               <Typography variant='body2' noWrap>
                 {meal.location}
               </Typography>
             </Box>
-            <Box display='flex' alignItems='center'>
-              <AccessTime color='action' sx={{ mr: 1, flexShrink: 0 }} />
+            <Box display='flex' alignItems='flex-end'>
+              <AccessTime color='primary' sx={{ mr: 1, flexShrink: 0 }} />
               <Typography variant='body2' noWrap>
                 {formatDate(meal.scheduled_at)}
               </Typography>
             </Box>
-            <Box display='flex' alignItems='center' justifyContent='flex-end'>
-              <AttachMoney color='action' sx={{ mr: 0.5, flexShrink: 0 }} />
-              <Typography variant='body2'>Price: ${meal.price}</Typography>
+            <Box display='flex' alignItems='flex-end' justifyContent='flex-end'>
+              <AttachMoney color='primary' sx={{ mr: 0.5, flexShrink: 0 }} />
+              <Typography variant='body2'>Price: DKK {meal.price}</Typography>
             </Box>
           </Stack>
         </CardContent>

@@ -21,7 +21,7 @@ import Container from "@mui/material/Container";
 const drawerWidth = 240;
 const navItems = [
   { text: "Home", href: "/" },
-  { text: "About us", href: "/about" },
+  { text: "About us", href: "/about_us" },
   { text: "Meals", href: "/meals" },
 ];
 
@@ -36,7 +36,7 @@ export default function DrawerAppBar() {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant='h6' component='h1' sx={{ my: 2 }}>
-        Meal Sharing
+        FoodFriends
       </Typography>
 
       <Divider />
@@ -56,7 +56,7 @@ export default function DrawerAppBar() {
   );
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", width: "100%" }}>
       <CssBaseline />
       <AppBar component='nav' position='sticky'>
         <Container maxWidth='lg' disableGutters>
@@ -85,7 +85,7 @@ export default function DrawerAppBar() {
                 component='h1'
                 sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
               >
-                Meal Sharing
+                FoodFriends
               </Typography>
             </Link>
             <Box sx={{ display: { xs: "none", sm: "block" } }}>

@@ -2,9 +2,12 @@ import Grid from "@mui/material/Grid2";
 import MealCard from "./MealCard";
 
 async function fetchMeals() {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/meals`, {
-    cache: "no-store",
-  });
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/meals/summary`,
+    {
+      cache: "no-store",
+    }
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch meals");

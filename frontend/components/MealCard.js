@@ -8,11 +8,23 @@ import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import AccessTime from "@mui/icons-material/AccessTime";
 import LocationOn from "@mui/icons-material/LocationOn";
-import AttachMoney from "@mui/icons-material/AttachMoney";
+import StarsIcon from "@mui/icons-material/Stars";
+import Chip from "@mui/material/Chip";
 import formatDate from "@/utils/formatDate.js";
 
-export default function Meal({ meal }) {
+export default function MealCard({ meal }) {
   const imageUrl = `/images/meals/${meal.image_url}` || "default.jpg";
+
+  const getAvailableSpotsLabel = (availableSpots) => {
+    if (availableSpots === 0) {
+      return "Fully Booked";
+    } else if (availableSpots < 5) {
+      return `Few spot${availableSpots > 1 ? "s" : ""} left`;
+    }
+    return null;
+  };
+
+  const availableSpotsLabel = getAvailableSpotsLabel(meal.available_spots);
 
   return (
     <Link
@@ -44,6 +56,18 @@ export default function Meal({ meal }) {
             style={{ objectFit: "cover" }}
             priority
           />
+          {availableSpotsLabel && (
+            <Chip
+              label={availableSpotsLabel}
+              sx={{
+                position: "absolute",
+                top: 8,
+                left: 8,
+                zIndex: 1,
+                backgroundColor: "rgba(255, 255, 255, 0.7)",
+              }}
+            />
+          )}
         </CardMedia>
         <CardContent
           sx={{
@@ -69,9 +93,24 @@ export default function Meal({ meal }) {
                 {formatDate(meal.scheduled_at)}
               </Typography>
             </Box>
-            <Box display='flex' alignItems='flex-end' justifyContent='flex-end'>
-              <AttachMoney color='primary' sx={{ mr: 0.5, flexShrink: 0 }} />
-              <Typography variant='body2'>Price: DKK {meal.price}</Typography>
+            <Box
+              display='flex'
+              alignItems='center'
+              justifyContent='space-between'
+            >
+              <Box display='flex' alignItems='flex-end'>
+                <StarsIcon color='primary' sx={{ mr: 0.5, flexShrink: 0 }} />
+                <Typography variant='body2'>
+                  {meal.average_stars.toFixed(1)}
+                </Typography>
+              </Box>
+
+              <Typography
+                variant='subtitle1'
+                sx={{ fontWeight: "bold", color: "primary.main" }}
+              >
+                DKK {meal.price}
+              </Typography>
             </Box>
           </Stack>
         </CardContent>

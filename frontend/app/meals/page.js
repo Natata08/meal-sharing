@@ -1,4 +1,4 @@
-import MealsList from "@/components/MealsList";
+import MealsList from "@/components/meal/MealsList";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 

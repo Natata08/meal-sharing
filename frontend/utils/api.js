@@ -65,5 +65,6 @@ export const submitReview = async (id, reviewData) => {
     body: JSON.stringify({ ...reviewData, meal_id: id }),
   });
   if (!response.ok) throw new Error("Failed to submit review");
+
   return response.json();
 };

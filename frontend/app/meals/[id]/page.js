@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -12,8 +13,9 @@ import ReviewModal from "@/components/ReviewModal";
 import { fetchMeal, makeReservation, submitReview } from "@/utils/api";
 
 export default function MealDetailsPage({ params }) {
+  const router = useRouter();
   const id = params.id;
-  const [meal, setMeal] = useState([]);
+  const [meal, setMeal] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [reservationModalOpen, setReservationModalOpen] = useState(false);
@@ -29,12 +31,12 @@ export default function MealDetailsPage({ params }) {
   const handleReservationSubmit = async (reservationData) => {
     try {
       await makeReservation(reservationData);
-      setSubmitMessage("Reservation successful!");
+      setSubmitMessage("Reservation submitted successful!");
       setReservationModalOpen(false);
+      router.refresh();
     } catch (err) {
       setSubmitMessage("Failed to make reservation. Please try again.");
     }
-    revalidatePath(`/meals/${id}`);
   };
 
   const handleReviewSubmit = async (reviewData) => {
@@ -42,6 +44,7 @@ export default function MealDetailsPage({ params }) {
       await submitReview(id, reviewData);
       setSubmitMessage("Review submitted successfully!");
       setReviewModalOpen(false);
+      router.refresh();
     } catch (err) {
       setSubmitMessage("Failed to submit review. Please try again.");
     }
@@ -53,7 +56,7 @@ export default function MealDetailsPage({ params }) {
         display='flex'
         justifyContent='center'
         alignItems='center'
-        height='50vh'
+        height='100vh'
       >
         <CircularProgress />
       </Box>
@@ -62,7 +65,7 @@ export default function MealDetailsPage({ params }) {
 
   if (error) {
     return (
-      <Container maxWidth='md' sx={{ mt: 4 }}>
+      <Container maxWidth='md' sx={{ mt: 13 }}>
         <Alert severity='error'>{error}</Alert>
       </Container>
     );
@@ -70,8 +73,16 @@ export default function MealDetailsPage({ params }) {
 
   return (
     <Container maxWidth='md' sx={{ mt: 13, mb: 6 }}>
-      <MealInfo meal={meal} />
-      <Box mt={2}>
+      {meal && <MealInfo meal={meal} />}
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: 1,
+          flexWrap: "wrap",
+        }}
+      >
         <Button
           variant='contained'
           color='primary'
@@ -82,9 +93,8 @@ export default function MealDetailsPage({ params }) {
         </Button>
         <Button
           variant='outlined'
-          color='secondary'
+          color='primary'
           onClick={() => setReviewModalOpen(true)}
-          sx={{ ml: 2 }}
         >
           Write review
         </Button>
@@ -95,6 +105,7 @@ export default function MealDetailsPage({ params }) {
         onClose={() => setReservationModalOpen(false)}
         onSubmit={handleReservationSubmit}
         mealId={meal.id}
+        available_spots={meal.available_reservations}
       />
 
       <ReviewModal
@@ -107,6 +118,7 @@ export default function MealDetailsPage({ params }) {
         <Alert
           severity={submitMessage.includes("successful") ? "success" : "error"}
           onClose={() => setSubmitMessage(null)}
+          sx={{ mt: 2 }}
         >
           {submitMessage}
         </Alert>

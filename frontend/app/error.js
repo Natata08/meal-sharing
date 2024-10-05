@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 
 export default function Error({ error, reset }) {
   return (
-    <Container maxWidth='md' sx={{ mt: 4, mt: 13 }}>
+    <Container maxWidth='md' sx={{ mt: 13 }}>
       <Alert
         severity='error'
         action={

@@ -15,7 +15,7 @@ export default function MealInfo({ meal }) {
   const imageUrl = `/images/meals/${meal.image_url}` || "default.jpg";
 
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={4} mb={3}>
       <Grid
         xs={12}
         sx={{

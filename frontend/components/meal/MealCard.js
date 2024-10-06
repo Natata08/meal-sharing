@@ -19,7 +19,9 @@ export default function MealCard({ meal }) {
     if (availableSpots === 0) {
       return "Fully Booked";
     } else if (availableSpots < 5) {
-      return `Few spot${availableSpots > 1 ? "s" : ""} left`;
+      return `${availableSpots} spot${availableSpots > 1 ? "s" : ""} left`;
+    } else if (availableSpots >= 5) {
+      return "5+ spots available";
     }
     return null;
   };

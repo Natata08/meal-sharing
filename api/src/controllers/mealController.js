@@ -241,7 +241,7 @@ export const getReservationsForMeal = async (req, res) => {
 
 export const getMealsSummary = async (req, res) => {
   try {
-    const mealsSummary = await knex("meal")
+    let query = knex("meal")
       .select(
         "meal.*",
         knex.raw(
@@ -268,8 +268,28 @@ export const getMealsSummary = async (req, res) => {
           .as("reservation_totals"),
         "meal.id",
         "reservation_totals.meal_id"
-      )
-      .orderBy("meal.scheduled_at", "asc");
+      );
+
+    if (req.query.title) {
+      query = query.where("title", "like", `%${req.query.title}%`);
+    }
+
+    if (req.query.availableReservations === "true") {
+      query = query.whereRaw(
+        "(meal.max_reservations - COALESCE(reservation_totals.total_guests, 0)) > 0"
+      );
+    }
+
+    if (req.query.sortKey) {
+      const { sortKey, sortDir } = req.query;
+      const allowedKeysToSort = ["scheduled_at", "max_reservations", "price"];
+
+      if (allowedKeysToSort.includes(sortKey)) {
+        query = query.orderBy(sortKey, sortDir === "desc" ? "desc" : "asc");
+      }
+    }
+
+    const mealsSummary = await query;
 
     const formattedMealSummaries = mealsSummary.map((meal) => ({
       ...meal,

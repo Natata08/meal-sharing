@@ -12,7 +12,7 @@ const socialMediaLinks = [
   { name: "LinkedIn", icon: LinkedIn, url: "https://linkedin.com" },
 ];
 
-export default function () {
+export default function SocialMediaIcons() {
   return (
     <Box sx={{ display: "flex", justifyContent: "center" }}>
       {socialMediaLinks.map((socialLink) => (

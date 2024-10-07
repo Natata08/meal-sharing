@@ -1,14 +1,11 @@
-"use client";
-
-import { useState } from "react";
 import MealsList from "@/components/meal/MealsList";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/system/Box";
+import SearchField from "@/components/ui/SearchField";
 
-export default function MealsPage() {
-  const [searchQuery, setSearchQuery] = useState("");
+export default async function MealsPage({ searchParams }) {
+  const query = searchParams?.title || "";
 
   return (
     <main>
@@ -24,17 +21,10 @@ export default function MealsPage() {
         </Typography>
 
         <Box sx={{ mb: 4, display: "flex", justifyContent: "center" }}>
-          <TextField
-            size='small'
-            label='Search meals'
-            variant='outlined'
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            sx={{ mr: 2, width: "250px" }}
-          />
+          <SearchField />
         </Box>
 
-        <MealsList searchQuery={searchQuery} />
+        <MealsList query={query} />
       </Container>
     </main>
   );

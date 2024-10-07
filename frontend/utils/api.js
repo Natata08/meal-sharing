@@ -1,19 +1,23 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const fetchMeals = async () => {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/meals/summary`,
-    {
-      cache: "no-store",
-    }
-  );
+export const fetchMeals = async (query = "") => {
+  const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/meals/summary`);
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch meals");
+  if (query) {
+    url.searchParams.append("title", query);
   }
 
-  const data = await response.json();
-  return data;
+  const response = await fetch(url, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      "We're having trouble loading the meal details right now. Please try again later."
+    );
+  }
+
+  return response.json();
 };
 
 export const fetchMeal = async (id, setMeal, setError, setLoading) => {

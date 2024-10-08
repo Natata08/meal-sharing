@@ -135,8 +135,8 @@ const AboutUsPage = () => {
 
         <Box sx={{ textAlign: "center", mb: 6 }}>
           <Typography variant='h6' color='primary'>
-            Join us in this delicious adventure, and let's build stronger, more
-            connected communities—one shared meal at a time!
+            Join us in this delicious adventure, and let&apos;s build stronger,
+            more connected communities—one shared meal at a time!
           </Typography>
         </Box>
       </Container>

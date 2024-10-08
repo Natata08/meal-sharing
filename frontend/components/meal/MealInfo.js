@@ -75,7 +75,7 @@ export default function MealInfo({ meal }) {
 
         <Paper elevation={3} sx={{ p: 3, mb: 3 }}>
           <Typography variant='body1' sx={{ fontStyle: "italic" }}>
-            "{meal.description}"
+            &quot;{meal.description}&quot;
           </Typography>
         </Paper>
 

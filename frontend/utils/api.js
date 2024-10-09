@@ -39,6 +39,11 @@ export const fetchMeal = async (id, setMeal, setError, setLoading) => {
         fetch(`${API_URL}/meals/${id}/reservations`),
       ]);
 
+    if (mealResponse.status === 404) {
+      setMeal(null);
+      return;
+    }
+
     if (!mealResponse.ok || !reviewsResponse.ok || !reservationsResponse.ok)
       throw new Error("Failed to fetch information about this meal");
 

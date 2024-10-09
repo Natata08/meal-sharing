@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -10,6 +9,8 @@ import MealInfo from "@/components/meal/MealInfo";
 import ReservationModal from "@/components/ReservationModal";
 import ReviewModal from "@/components/ReviewModal";
 import { fetchMeal, makeReservation, submitReview } from "@/utils/api";
+import { useState, useEffect } from "react";
+import { notFound } from "next/navigation";
 
 export default function MealDetailsPage({ params }) {
   const id = params.id;
@@ -72,60 +73,66 @@ export default function MealDetailsPage({ params }) {
     );
   }
 
+  if (!meal && !error) {
+    notFound();
+  }
+
   return (
-    <Container maxWidth='md' sx={{ mt: 13, mb: 6 }}>
-      {meal && <MealInfo meal={meal} />}
+    <main>
+      <Container maxWidth='md' sx={{ mt: 13, mb: 6 }}>
+        {meal && <MealInfo meal={meal} />}
 
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", sm: "row" },
-          gap: 1,
-          flexWrap: "wrap",
-        }}
-      >
-        <Button
-          variant='contained'
-          color='primary'
-          onClick={() => setReservationModalOpen(true)}
-          disabled={meal.available_reservations <= 0}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            gap: 1,
+            flexWrap: "wrap",
+          }}
         >
-          Book seat
-        </Button>
-        <Button
-          variant='outlined'
-          color='primary'
-          onClick={() => setReviewModalOpen(true)}
-        >
-          Write review
-        </Button>
-      </Box>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={() => setReservationModalOpen(true)}
+            disabled={meal.available_reservations <= 0}
+          >
+            Book seat
+          </Button>
+          <Button
+            variant='outlined'
+            color='primary'
+            onClick={() => setReviewModalOpen(true)}
+          >
+            Write review
+          </Button>
+        </Box>
 
-      <ReservationModal
-        open={reservationModalOpen}
-        onClose={() => setReservationModalOpen(false)}
-        onSubmit={handleReservationSubmit}
-        mealId={meal.id}
-        available_spots={meal.available_reservations}
-      />
+        <ReservationModal
+          open={reservationModalOpen}
+          onClose={() => setReservationModalOpen(false)}
+          onSubmit={handleReservationSubmit}
+          mealId={meal.id}
+          available_spots={meal.available_reservations}
+        />
 
-      <ReviewModal
-        open={reviewModalOpen}
-        onClose={() => setReviewModalOpen(false)}
-        onSubmit={handleReviewSubmit}
-      />
+        <ReviewModal
+          open={reviewModalOpen}
+          onClose={() => setReviewModalOpen(false)}
+          onSubmit={handleReviewSubmit}
+        />
 
-      {submitMessage && (
-        <Alert
-          severity={
-            submitMessage.includes("successfully") ? "success" : "error"
-          }
-          onClose={() => setSubmitMessage(null)}
-          sx={{ mt: 2 }}
-        >
-          {submitMessage}
-        </Alert>
-      )}
-    </Container>
+        {submitMessage && (
+          <Alert
+            severity={
+              submitMessage.includes("successfully") ? "success" : "error"
+            }
+            onClose={() => setSubmitMessage(null)}
+            sx={{ mt: 2 }}
+          >
+            {submitMessage}
+          </Alert>
+        )}
+      </Container>
+    </main>
   );
 }

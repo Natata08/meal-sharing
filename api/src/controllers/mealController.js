@@ -282,7 +282,12 @@ export const getMealsSummary = async (req, res) => {
 
     if (req.query.sortKey) {
       const { sortKey, sortDir } = req.query;
-      const allowedKeysToSort = ["scheduled_at", "max_reservations", "price"];
+      const allowedKeysToSort = [
+        "scheduled_at",
+        "max_reservations",
+        "price",
+        "average_stars",
+      ];
 
       if (allowedKeysToSort.includes(sortKey)) {
         query = query.orderBy(sortKey, sortDir === "desc" ? "desc" : "asc");

@@ -21,21 +21,23 @@ export default function MealDetailsPage({ params }) {
   const [reservationModalOpen, setReservationModalOpen] = useState(false);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [submitMessage, setSubmitMessage] = useState(null);
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
 
   useEffect(() => {
     if (id) {
       fetchMeal(id, setMeal, setError, setLoading);
     }
-  }, [id]);
+  }, [id, refetchTrigger]);
 
   const handleReservationSubmit = async (reservationData) => {
     try {
       await makeReservation(reservationData);
-      setSubmitMessage("Reservation submitted successful!");
+      setSubmitMessage("Reservation submitted successfully!");
       setReservationModalOpen(false);
-      router.refresh();
+      setRefetchTrigger((prev) => prev + 1);
     } catch (err) {
       setSubmitMessage("Failed to make reservation. Please try again.");
+      setReservationModalOpen(false);
     }
   };
 
@@ -44,9 +46,10 @@ export default function MealDetailsPage({ params }) {
       await submitReview(id, reviewData);
       setSubmitMessage("Review submitted successfully!");
       setReviewModalOpen(false);
-      router.refresh();
+      setRefetchTrigger((prev) => prev + 1);
     } catch (err) {
       setSubmitMessage("Failed to submit review. Please try again.");
+      setReviewModalOpen(false);
     }
   };
 
@@ -116,7 +119,9 @@ export default function MealDetailsPage({ params }) {
 
       {submitMessage && (
         <Alert
-          severity={submitMessage.includes("successful") ? "success" : "error"}
+          severity={
+            submitMessage.includes("successfully") ? "success" : "error"
+          }
           onClose={() => setSubmitMessage(null)}
           sx={{ mt: 2 }}
         >

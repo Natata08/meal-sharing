@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,7 +12,6 @@ import ReviewModal from "@/components/ReviewModal";
 import { fetchMeal, makeReservation, submitReview } from "@/utils/api";
 
 export default function MealDetailsPage({ params }) {
-  const router = useRouter();
   const id = params.id;
   const [meal, setMeal] = useState(null);
   const [loading, setLoading] = useState(true);

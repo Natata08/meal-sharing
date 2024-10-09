@@ -1,20 +1,30 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const fetchMeals = async (query = "") => {
+export const fetchMeals = async (
+  query = "",
+  sortKey = "scheduled_at",
+  sortDir = "asc",
+  availableReservations = false
+) => {
   const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/meals/summary`);
 
   if (query) {
     url.searchParams.append("title", query);
   }
 
+  if (availableReservations) {
+    url.searchParams.append("availableReservations", "true");
+  }
+
+  url.searchParams.append("sortKey", sortKey);
+  url.searchParams.append("sortDir", sortDir);
+
   const response = await fetch(url, {
     cache: "no-store",
   });
 
   if (!response.ok) {
-    throw new Error(
-      "We're having trouble loading the meal details right now. Please try again later."
-    );
+    throw new Error("Failed to fetch meals");
   }
 
   return response.json();

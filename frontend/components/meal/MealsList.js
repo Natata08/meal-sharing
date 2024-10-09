@@ -3,8 +3,18 @@ import Typography from "@mui/material/Typography";
 import MealCard from "./MealCard";
 import { fetchMeals } from "@/utils/api";
 
-export default async function MealsList({ query }) {
-  const meals = await fetchMeals(query);
+export default async function MealsList({
+  query,
+  sortKey,
+  sortDir,
+  availableReservations,
+}) {
+  const meals = await fetchMeals(
+    query,
+    sortKey,
+    sortDir,
+    availableReservations
+  );
 
   if (meals.length === 0) {
     return (

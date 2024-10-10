@@ -217,3 +217,94 @@ export const getReviewsForMeal = async (req, res) => {
     res.status(500).json({ error: "Error finding reviews" });
   }
 };
+
+export const getReservationsForMeal = async (req, res) => {
+  try {
+    const meal_id = parseInt(req.params.meal_id);
+
+    if (isNaN(meal_id)) {
+      return res.status(400).json({
+        error: "Invalid ID provided",
+      });
+    }
+
+    const reservations = await knex
+      .from("reservation")
+      .select()
+      .where({ meal_id: meal_id });
+    res.json(reservations);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error finding reservations" });
+  }
+};
+
+export const getMealsSummary = async (req, res) => {
+  try {
+    let query = knex("meal")
+      .select(
+        "meal.*",
+        knex.raw(
+          "ROUND(COALESCE(avg_reviews.avg_stars, 0), 1) as average_stars"
+        ),
+        knex.raw(
+          "(meal.max_reservations - COALESCE(reservation_totals.total_guests, 0)) as available_spots"
+        )
+      )
+      .leftJoin(
+        knex("review")
+          .select("meal_id")
+          .avg("stars as avg_stars")
+          .groupBy("meal_id")
+          .as("avg_reviews"),
+        "meal.id",
+        "avg_reviews.meal_id"
+      )
+      .leftJoin(
+        knex("reservation")
+          .select("meal_id")
+          .sum("number_of_guests as total_guests")
+          .groupBy("meal_id")
+          .as("reservation_totals"),
+        "meal.id",
+        "reservation_totals.meal_id"
+      );
+
+    if (req.query.title) {
+      query = query.where("title", "like", `%${req.query.title}%`);
+    }
+
+    if (req.query.availableReservations === "true") {
+      query = query.whereRaw(
+        "(meal.max_reservations - COALESCE(reservation_totals.total_guests, 0)) > 0"
+      );
+    }
+
+    if (req.query.sortKey) {
+      const { sortKey, sortDir } = req.query;
+      const allowedKeysToSort = [
+        "scheduled_at",
+        "max_reservations",
+        "price",
+        "average_stars",
+      ];
+
+      if (allowedKeysToSort.includes(sortKey)) {
+        query = query.orderBy(sortKey, sortDir === "desc" ? "desc" : "asc");
+      }
+    }
+
+    const mealsSummary = await query;
+
+    const formattedMealSummaries = mealsSummary.map((meal) => ({
+      ...meal,
+      average_stars: parseFloat(meal.average_stars),
+      available_spots: parseInt(meal.available_spots, 10),
+    }));
+
+    res.json(formattedMealSummaries);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error fetching all meals summary" });
+  }
+};

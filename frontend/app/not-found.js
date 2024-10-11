@@ -18,14 +18,14 @@ export default function NotFound() {
         }}
       >
         <Typography variant='h2' component='h2' gutterBottom>
-          Not Found
+          Not found
         </Typography>
-        <Typography variant='body1' paragraph>
+        <Typography variant='body1'>
           Could not find requested resource
         </Typography>
         <Link href='/' passHref>
           <Button variant='contained' color='primary'>
-            Return Home
+            Return home
           </Button>
         </Link>
       </Box>

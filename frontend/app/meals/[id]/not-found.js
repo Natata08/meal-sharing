@@ -18,11 +18,9 @@ export default function NotFound() {
         }}
       >
         <Typography variant='h2' component='h2' gutterBottom>
-          Not Found
+          Meal not found
         </Typography>
-        <Typography variant='body1' paragraph>
-          Could not find requested meal
-        </Typography>
+        <Typography variant='body1'>Could not find requested meal</Typography>
         <Link href='/meals' passHref>
           <Button variant='contained' color='primary'>
             Return to all meals

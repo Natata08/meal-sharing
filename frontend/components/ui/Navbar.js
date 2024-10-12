@@ -23,6 +23,7 @@ const navItems = [
   { text: "Home", href: "/" },
   { text: "About us", href: "/about_us" },
   { text: "Meals", href: "/meals" },
+  { text: "Share meal", href: "/share_meal" },
 ];
 
 export default function DrawerAppBar() {

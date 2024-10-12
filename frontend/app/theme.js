@@ -19,7 +19,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: josefin_Sans.style.fontFamily,
   },
 });

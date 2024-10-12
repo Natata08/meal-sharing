@@ -98,11 +98,11 @@ export default function MealInfo({ meal }) {
           >
             <Box display='flex' alignItems='flex-end'>
               <LocationOnIcon sx={{ mr: 1, color: "primary.main" }} />
-              <Typography variant='body2'>{meal.location}</Typography>
+              <Typography variant='body1'>{meal.location}</Typography>
             </Box>
             <Box display='flex' alignItems='flex-end'>
               <CalendarTodayIcon sx={{ mr: 1, color: "primary.main" }} />
-              <Typography variant='body2'>
+              <Typography variant='body1'>
                 {formatDate(meal.scheduled_at)}
               </Typography>
             </Box>
@@ -118,7 +118,7 @@ export default function MealInfo({ meal }) {
           >
             <Box display='flex' alignItems='flex-end' mb={2}>
               <PeopleIcon sx={{ mr: 1, color: "primary.main" }} />
-              <Typography variant='body2'>
+              <Typography variant='body1'>
                 {meal.available_reservations} spots left out of{" "}
                 {meal.max_reservations}
               </Typography>

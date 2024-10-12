@@ -73,7 +73,7 @@ const AboutUsPage = () => {
           }}
         >
           <Box sx={{ flex: 1 }}>
-            <Typography variant='body1' align='center'>
+            <Typography variant='subtitle1' align='center' component='p'>
               At FoodFriends, we believe that food has the power to bring people
               together and create meaningful connections. Our platform is
               designed to foster a sense of community by enabling individuals to

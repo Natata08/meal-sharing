@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import InputAdornment from "@mui/material/InputAdornment";
+import ImagePicker from "@/components/ui/image-picker";
 
 export default function ShareMealPage() {
   const [mealData, setMealData] = useState({
@@ -145,26 +146,8 @@ export default function ShareMealPage() {
                 margin='normal'
                 required
               />
-              <Button
-                variant='contained'
-                component='label'
-                size='small'
-                fullWidth
-                sx={{ mt: 2, mb: 2 }}
-              >
-                Upload Image
-                <input
-                  type='file'
-                  hidden
-                  accept='image/*'
-                  onChange={handleImageUpload}
-                />
-              </Button>
-              {mealData.image && (
-                <Typography variant='body2' align='center' gutterBottom>
-                  Image selected: {mealData.image.name}
-                </Typography>
-              )}
+              <ImagePicker />
+
               <Button
                 type='submit'
                 variant='contained'

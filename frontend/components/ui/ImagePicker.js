@@ -51,10 +51,13 @@ export default function ImagePicker({ label, name }) {
           </Box>
         )}
       </Box>
-      <label htmlFor={name}>{label}</label>
+      <label htmlFor={name} hidden>
+        {label}
+      </label>
       <input
         type='file'
         id={name}
+        name={name}
         accept='image/png, image/jpeg'
         hidden
         ref={imageInputRef}

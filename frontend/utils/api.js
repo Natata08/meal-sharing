@@ -1,3 +1,6 @@
+import slugify from "slugify";
+// import fs from "node:fs";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export const fetchMeals = async (
@@ -89,7 +92,7 @@ export const makeReservation = async (reservationData) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(reservationData),
   });
-  if (!response.ok) throw new Error("Failed to make reservation");
+  if (!response.ok) throw new Error("Failed to make a reservation");
   return response.json();
 };
 
@@ -99,7 +102,33 @@ export const submitReview = async (id, reviewData) => {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...reviewData, meal_id: id }),
   });
-  if (!response.ok) throw new Error("Failed to submit review");
+  if (!response.ok) throw new Error("Failed to submit a review");
+
+  return response.json();
+};
+
+export const saveMeal = async (meal) => {
+  const imageNameSlug = slugify(meal.title, { lower: true });
+  const extension = meal.image_url.name.split(".").pop();
+  const fileName = `${imageNameSlug}.${extension}`;
+
+  // const stream = fs.createWriteStream(`public/images/meals/${fileName}`);
+  // const bufferedImage = await meal.image_url.arrayBuffer();
+
+  // stream.write(Buffer.from(bufferedImage), (error) => {
+  //   if (error) {
+  //     throw new Error("Failed to save image");
+  //   }
+  // });
+  console.log({ ...meal, image_url: fileName });
+  const response = await fetch(`${API_URL}/meals`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ ...meal, image_url: fileName }),
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to save a meal`);
+  }
 
   return response.json();
 };

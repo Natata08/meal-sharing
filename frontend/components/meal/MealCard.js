@@ -13,7 +13,9 @@ import Chip from "@mui/material/Chip";
 import formatDate from "@/utils/formatDate.js";
 
 export default function MealCard({ meal }) {
-  const imageUrl = `/images/meals/${meal.image_url}` || "default.jpg";
+  const imageUrl = meal.image_url
+    ? `/images/meals/${meal.image_url}`
+    : "/images/meals/default.jpg";
 
   const getAvailableSpotsLabel = (availableSpots) => {
     if (availableSpots === 0) {

@@ -4,6 +4,9 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import { PhoneNumberUtil, PhoneNumberFormat } from "google-libphonenumber";
+
+const phoneUtil = PhoneNumberUtil.getInstance();
 
 export default function ReservationModal({
   open,
@@ -35,13 +38,23 @@ export default function ReservationModal({
   };
 
   const validatePhoneNumber = (phoneNumber) => {
-    const phoneRegex = /^\+?[0-9]{1,3}?[- ]?[0-9]{6,14}$/;
-    if (!phoneRegex.test(phoneNumber)) {
-      setPhoneError("Please enter a valid phone number");
+    try {
+      const number = phoneUtil.parseAndKeepRawInput(phoneNumber, "EU");
+      if (!phoneUtil.isValidNumber(number)) {
+        setPhoneError("Please enter a valid phone number with country code");
+        return false;
+      }
+      const formattedNumber = phoneUtil.format(
+        number,
+        PhoneNumberFormat.INTERNATIONAL
+      );
+      setForm({ ...form, contact_phonenumber: formattedNumber });
+      setPhoneError("");
+      return true;
+    } catch (error) {
+      setPhoneError("Invalid phone number format");
       return false;
     }
-    setPhoneError("");
-    return true;
   };
 
   const validateEmail = (email) => {
@@ -149,8 +162,12 @@ export default function ReservationModal({
             margin='normal'
             required
             error={!!phoneError}
-            helperText={phoneError}
+            helperText={
+              phoneError ||
+              "Enter phone number with country code (e.g., +45 12 34 56 78)"
+            }
           />
+
           <Button
             type='submit'
             variant='contained'

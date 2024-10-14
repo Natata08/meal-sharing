@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid2";
 import Image from "next/image";
 import { useRef, useState } from "react";
 
-export default function ImagePicker({ label, name }) {
+export default function ImagePicker({ label, name, onChange }) {
   const [uploadedImage, setUploadedImage] = useState(null);
   const imageInputRef = useRef(null);
 
@@ -22,7 +22,7 @@ export default function ImagePicker({ label, name }) {
       setUploadedImage(null);
       return;
     }
-
+    onChange();
     const fileReader = new FileReader();
 
     fileReader.onload = () => {
@@ -62,7 +62,6 @@ export default function ImagePicker({ label, name }) {
         hidden
         ref={imageInputRef}
         onChange={handleImageChange}
-        required
       />
       <Button
         variant='outlined'

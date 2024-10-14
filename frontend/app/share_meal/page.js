@@ -1,14 +1,38 @@
+"use client";
+
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import InputAdornment from "@mui/material/InputAdornment";
+import Alert from "@mui/material/Alert";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import AlertTitle from "@mui/material/AlertTitle";
+import ListItemText from "@mui/material/ListItemText";
+
 import ImagePicker from "@/components/ui/ImagePicker";
+import MealFormSubmit from "@/components/MealFormSubmit";
 import { shareMeal } from "@/utils/actions";
 
+import { useFormState } from "react-dom";
+import { useState, useEffect } from "react";
+
 export default function ShareMealPage() {
+  const [state, formAction] = useFormState(shareMeal, { errors: null });
+  const [showErrors, setShowErrors] = useState(false);
+
+  useEffect(() => {
+    if (state.errors) {
+      setShowErrors(true);
+    }
+  }, [state.errors]);
+
+  const handleInputChange = () => {
+    setShowErrors(false);
+  };
+
   return (
     <main>
       <Container maxWidth='md' sx={{ mt: 13, mb: 6 }}>
@@ -31,13 +55,14 @@ export default function ShareMealPage() {
         </Box>
         <Container maxWidth='sm' mb={10}>
           <Paper elevation={4} sx={{ p: 4 }}>
-            <form action={shareMeal}>
+            <form action={formAction}>
               <TextField
                 fullWidth
                 label='Meal Title'
                 name='title'
                 margin='normal'
                 size='small'
+                onChange={handleInputChange}
                 required
               />
               <TextField
@@ -48,6 +73,7 @@ export default function ShareMealPage() {
                 multiline
                 rows={4}
                 size='small'
+                onChange={handleInputChange}
                 required
               />
               <TextField
@@ -56,6 +82,7 @@ export default function ShareMealPage() {
                 name='location'
                 margin='normal'
                 size='small'
+                onChange={handleInputChange}
                 required
               />
               <TextField
@@ -70,6 +97,7 @@ export default function ShareMealPage() {
                 }}
                 margin='normal'
                 size='small'
+                onChange={handleInputChange}
                 required
               />
               <TextField
@@ -86,6 +114,7 @@ export default function ShareMealPage() {
                   },
                 }}
                 margin='normal'
+                onChange={handleInputChange}
                 required
               />
               <TextField
@@ -105,20 +134,33 @@ export default function ShareMealPage() {
                   },
                 }}
                 margin='normal'
+                onChange={handleInputChange}
                 required
               />
-              <ImagePicker label='Your image' name='image' />
+              <ImagePicker
+                label='Your image'
+                name='image'
+                onChange={handleInputChange}
+              />
 
-              <Button
-                type='submit'
-                variant='contained'
-                color='primary'
-                fullWidth
-                size='small'
-                sx={{ mt: 2 }}
-              >
-                Share Your Meal
-              </Button>
+              {showErrors && state.errors && (
+                <Alert
+                  severity='error'
+                  onClose={() => setShowErrors(false)}
+                  sx={{ mt: 2 }}
+                >
+                  <AlertTitle>Error</AlertTitle>
+                  <List dense disablePadding>
+                    {state.errors.map((error, index) => (
+                      <ListItem key={`error-${index}`}>
+                        <ListItemText primary={error} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Alert>
+              )}
+
+              <MealFormSubmit />
             </form>
           </Paper>
         </Container>

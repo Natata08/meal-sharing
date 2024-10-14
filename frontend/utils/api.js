@@ -35,23 +35,31 @@ export const fetchMeals = async (
 
 export const fetchMeal = async (id, setMeal, setError, setLoading) => {
   try {
-    const [mealResponse, reviewsResponse, reservationsResponse] =
-      await Promise.all([
-        fetch(`${API_URL}/meals/${id}`),
-        fetch(`${API_URL}/meals/${id}/reviews`),
-        fetch(`${API_URL}/meals/${id}/reservations`),
-      ]);
+    const mealResponse = await fetch(`${API_URL}/meals/${id}`);
 
     if (mealResponse.status === 404) {
       setMeal(null);
       return;
     }
 
-    if (!mealResponse.ok || !reviewsResponse.ok || !reservationsResponse.ok)
-      throw new Error("Failed to fetch information about this meal");
+    if (!mealResponse.ok) {
+      throw new Error("Failed to fetch meal information");
+    }
 
     const mealData = await mealResponse.json();
+
+    const reviewsResponse = await fetch(`${API_URL}/meals/${id}/reviews`);
+    if (!reviewsResponse.ok) {
+      throw new Error("Failed to fetch reviews");
+    }
     const reviewsData = await reviewsResponse.json();
+
+    const reservationsResponse = await fetch(
+      `${API_URL}/meals/${id}/reservations`
+    );
+    if (!reservationsResponse.ok) {
+      throw new Error("Failed to fetch reservations");
+    }
     const reservationsData = await reservationsResponse.json();
 
     const totalReserved = reservationsData.reduce(

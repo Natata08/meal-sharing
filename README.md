@@ -60,6 +60,6 @@ The application is deployed on Vercel.
 
 ## Project Presentation
 
-For a detailed overview of the project, please watch our presentation:
+Click the image below to watch a project presentation:
 
-[FoodFriends Project Presentation](https://www.loom.com/share/8b72b1c0def74be887fd7055f1602f20?sid=269be61f-b84c-43b0-b959-f94cc9030a26)
+[![FoodFriends Project Presentation](https://cdn.loom.com/sessions/thumbnails/8b72b1c0def74be887fd7055f1602f20-with-play.gif)](https://www.loom.com/share/8b72b1c0def74be887fd7055f1602f20?sid=269be61f-b84c-43b0-b959-f94cc9030a26 "FoodFriends Project Presentation")

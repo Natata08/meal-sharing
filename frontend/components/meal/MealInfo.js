@@ -12,9 +12,7 @@ import Paper from "@mui/material/Paper";
 import formatDate from "@/utils/formatDate";
 
 export default function MealInfo({ meal }) {
-  const imageUrl = meal.image_url
-    ? `/images/meals/${meal.image_url}`
-    : "/images/meals/default.jpg";
+  const imageUrl = `https://nat-meal-sharing-users-image.s3.eu-north-1.amazonaws.com/${meal.image_url}`;
 
   return (
     <Grid container spacing={4} mb={3}>

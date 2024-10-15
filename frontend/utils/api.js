@@ -1,7 +1,11 @@
 import slugify from "slugify";
-// import fs from "node:fs";
+import { S3 } from "@aws-sdk/client-s3";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+const s3 = new S3({
+  region: "eu-north-1",
+});
 
 export const fetchMeals = async (
   query = "",
@@ -120,15 +124,15 @@ export const saveMeal = async (meal) => {
   const extension = meal.image_url.name.split(".").pop();
   const fileName = `${imageNameSlug}.${extension}`;
 
-  // const stream = fs.createWriteStream(`public/images/meals/${fileName}`);
-  // const bufferedImage = await meal.image_url.arrayBuffer();
+  const bufferedImage = await meal.image_url.arrayBuffer();
 
-  // stream.write(Buffer.from(bufferedImage), (error) => {
-  //   if (error) {
-  //     throw new Error("Failed to save image");
-  //   }
-  // });
-  console.log({ ...meal, image_url: fileName });
+  s3.putObject({
+    Bucket: "nat-meal-sharing-users-image",
+    Key: fileName,
+    Body: Buffer.from(bufferedImage),
+    ContentType: meal.image_url.type,
+  });
+
   const response = await fetch(`${API_URL}/meals`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

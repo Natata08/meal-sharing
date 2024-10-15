@@ -13,9 +13,7 @@ import Chip from "@mui/material/Chip";
 import formatDate from "@/utils/formatDate.js";
 
 export default function MealCard({ meal }) {
-  const imageUrl = meal.image_url
-    ? `/images/meals/${meal.image_url}`
-    : "/images/meals/default.jpg";
+  const imageUrl = `https://nat-meal-sharing-users-image.s3.eu-north-1.amazonaws.com/${meal.image_url}`;
 
   const getAvailableSpotsLabel = (availableSpots) => {
     if (availableSpots === 0) {

@@ -7,6 +7,7 @@ export const mealAddSchema = Joi.object({
   scheduled_at: Joi.date().iso().required(),
   max_reservations: Joi.number().integer().required(),
   price: Joi.number().precision(2).positive().required(),
+  image_url: Joi.string().optional().allow("").allow(null),
 });
 
 export const mealUpdateSchema = Joi.object({
@@ -16,6 +17,7 @@ export const mealUpdateSchema = Joi.object({
   scheduled_at: Joi.date().iso(),
   max_reservations: Joi.number().integer(),
   price: Joi.number().precision(2).positive(),
+  image_url: Joi.string().allow("").allow(null),
 }).min(1);
 
 export const reservationAddSchema = Joi.object({
@@ -53,6 +55,7 @@ export const validateRequest = (schema) => {
     const { error, value } = schema.validate(req.body);
 
     if (error) {
+      console.error(error.details[0].message);
       return res.status(400).json({
         error: error.details[0].message,
       });

@@ -1,0 +1,33 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.670.0",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.1.1",
+    "@mui/material": "^6.1.1",
+    "@mui/system": "^6.1.2",
+    "@mui/utils": "^6.1.2",
+    "@mui/x-date-pickers": "^7.20.0",
+    "google-libphonenumber": "^3.2.38",
+    "next": "14.2.13",
+    "react": "^18",
+    "react-dom": "^18",
+    "slugify": "^1.6.6",
+    "use-debounce": "^10.0.3"
+  },
+  "devDependencies": {
+    "@types/google-libphonenumber": "^7.4.30",
+    "@types/react-dom": "^18.3.1",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.13"
+  }
+}

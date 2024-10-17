@@ -6,7 +6,7 @@ FoodFriends is a full-stack web application built with Next.js, React, and MySQL
 
 This project was created as part of study at HackYourFuture.
 
-The application is deployed on Vercel.
+Both the frontend application and the backend API are deployed and hosted on Vercel.
 
 ## Deployed Application
 

@@ -31,11 +31,12 @@ export default function DrawerAppBar() {
   const pathname = usePathname();
 
   const handleDrawerToggle = () => {
+    console.log("eeee");
     setMobileOpen((prevState) => !prevState);
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
+    <Box sx={{ textAlign: "center" }}>
       <Typography variant='h6' component='h1' sx={{ my: 2 }}>
         FoodFriends
       </Typography>
@@ -81,11 +82,7 @@ export default function DrawerAppBar() {
                 display: { xs: "none", sm: "block" },
               }}
             >
-              <Typography
-                variant='h6'
-                component='h1'
-                sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-              >
+              <Typography variant='h6' component='h1' sx={{ flexGrow: 1 }}>
                 FoodFriends
               </Typography>
             </Link>

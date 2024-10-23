@@ -31,7 +31,6 @@ export default function DrawerAppBar() {
   const pathname = usePathname();
 
   const handleDrawerToggle = () => {
-    console.log("eeee");
     setMobileOpen((prevState) => !prevState);
   };
 
